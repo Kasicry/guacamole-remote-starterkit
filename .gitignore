@@ -1,1 +1,4 @@
 certs/
+notifier/.env
+__pycache__/
+.tools/
