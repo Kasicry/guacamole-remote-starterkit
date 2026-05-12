@@ -34,6 +34,7 @@ PostgreSQL
 | `remote-service-guacd` | RDP/SSH/VNC 실제 중계 |
 | `remote-service-guacamole` | 웹 UI와 API 제공 |
 | `remote-service-https-proxy` | HTTPS reverse proxy |
+| `remote-service-notifier` | 선택 사항: Guacamole 접속 성공 Slack 알림 |
 
 ## 2. `compose.yaml`
 
@@ -352,6 +353,24 @@ Guacamole 설정은 PostgreSQL volume에 저장된다. 주기적으로 DB 백업
 
 ```powershell
 docker compose exec postgres pg_dump -U guacamole_user guacamole_db > backup.sql
+```
+
+### 11.6 Slack Webhook 알림 연동
+
+`notifier` 서비스를 추가했다. 이 서비스는 Guacamole의 `guacamole_connection_history` 테이블을 polling해서 새 원격접속 이력이 생기면 Slack Incoming Webhook으로 알림을 보낼 수 있다.
+
+현재는 `notifier/.env`에 `SLACK_WEBHOOK_URL`이 없으면 dry-run으로 동작한다.
+
+실행 명령:
+
+```powershell
+docker compose --profile notifier up -d notifier
+```
+
+설정 문서:
+
+```text
+docs/slack-notifier.md
 ```
 
 ## 12. 주니어 개발자가 기억할 핵심
