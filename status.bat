@@ -1,0 +1,9 @@
+@echo off
+setlocal
+
+cd /d "%~dp0"
+
+docker compose ps
+
+endlocal
+pause
